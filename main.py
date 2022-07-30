@@ -1,5 +1,8 @@
 from tkinter import *
 import math
+import ttkthemes
+from tkinter import ttk
+
 
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -15,6 +18,8 @@ timer=None
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 def reset_timer(): 
+    reset.config(state=DISABLED)
+    start.config(state=NORMAL)
     global timer
     window.after_cancel(timer)
     canvas.itemconfig(timer_text,text="00:00")
@@ -24,6 +29,8 @@ def reset_timer():
     resp=0
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
+    start.config(state=DISABLED)
+    reset.config(state=NORMAL)
     global resp
     resp+=1
     work_sec=WORK_MIN*60
@@ -64,7 +71,9 @@ def count_down(count):
 
 # ---------------------------- UI SETUP ------------------------------- #
 
-window = Tk()
+window = ttkthemes.ThemedTk()
+window.get_themes()
+window.set_theme('radiance')
 window.title("Pomodoro")
 window.iconbitmap(r'tomato_icon.ico')
 window.config(padx=100,pady=50,bg=YELLOW)
@@ -75,11 +84,12 @@ timer_label.grid(column=2,row=1)
 check_maker=Label(text="",bg=YELLOW,fg=GREEN)
 check_maker.grid(column=2,row=3)
 
-start=Button(text="Start" ,highlightthickness = 0 ,command = start_timer)
+start=ttk.Button(text="Start",command = start_timer)
 start.grid(column=0,row=3)
 
-reset=Button(text="Reset",highlightthickness=0,command=reset_timer)
+reset=ttk.Button(text="Reset",command=reset_timer)
 reset.grid(column=3,row=3)
+reset.config(state=DISABLED)
 
 
 canvas=Canvas(width=210,height=250,bg=YELLOW,highlightthickness=0)
